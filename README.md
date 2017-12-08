@@ -1,4 +1,6 @@
-TASK DATE: 22.11.2017 - Finished: 22.11.2017 (LIGHT MEDIUM)
+TASK DATE: 22.11.2017 - Finished: 22.11.2017
+
+TASK LEVEL: MEDIUM - light
 
 TASK SHORT DESCRIPTION: 1108 (Redirect users to the previously viewed page after logging in)
 
@@ -18,11 +20,10 @@ CHANGES
 				//The system gets a lot of request (AJAX and other circulated requests totally unnecessarily), so need to filter the requests
 				$current_url = current_url();
 				$pattern = '~.+\.[a-zA-Z]{0,3}$~';
+				$needles = array('users/login', 'files/', 'uploads/', 'homepage', 'error/', 'no-permission');
 				preg_match($pattern, $current_url, $matches);
 				if (
-						strpos($current_url, 'users/login') === false
-						AND
-						strpos($current_url, 'homepage') === false
+						strpos_arr($current_url, $needles) === false
 						AND
 						strlen($_SERVER['REQUEST_URI']) > 1
 						AND 
@@ -31,10 +32,9 @@ CHANGES
 						strpos(str_replace($_SERVER['SERVER_NAME'], '', $current_url), $_SERVER['REQUEST_URI']) > 1
 						AND 
 						empty($matches)
-				)	
+					)	
 				{
 					$this->session->set_userdata('page_url',  $current_url);
-					//exit;
 				}
 
 				
@@ -84,4 +84,28 @@ CHANGES
 				return $_SERVER['QUERY_STRING'] ? $url . '?'  .$_SERVER['QUERY_STRING'] : $url;
 		
 			
+		\network-site\system\cms\helpers\MY_text_helper.php
+		
+			ADDED CODE: 
+			
+				if ( ! function_exists('strpos_arr'))
+				{
+					/* 
+					 * strpos that takes an array of values to match against a string
+					 * note the stupid argument order (to match strpos)
+					 */
+					function strpos_arr($haystack, $needles) 
+					{
+						if( ! is_array($needles) ) $needles = array($needles);
+						
+						foreach($needles as $needle) 
+						{
+							if(($pos = strpos($haystack, $needle))!==false) return $pos;
+						}
+						
+						return false;
+					}
+
+				}
+		
 		
