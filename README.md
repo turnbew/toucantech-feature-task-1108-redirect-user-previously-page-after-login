@@ -1,18 +1,18 @@
+FOR PRIVACY AND CODE PROTECTING REASONS THIS IS A SIMPLIFIED VERSION OF CHANGES AND NEW FEATURES
+
 TASK DATE: 22.11.2017 - Finished: 22.11.2017
 
 TASK LEVEL: MEDIUM - light
 
 TASK SHORT DESCRIPTION: 1108 (Redirect users to the previously viewed page after logging in)
-
+	
 GITHUB REPOSITORY CODE: feature/task-1108-redirect-user-previously-page-after-login
-
-ORIGINAL WORK: https://github.com/BusinessBecause/network-site/tree/feature/task-1108-redirect-user-previously-page-after-login
 
 CHANGES
  
 	IN FILES: 
 	
-		\network-site\system\cms\core\MY_Controller.php
+		MY_Controller.php
 		
 			ADDED CODE inside function __construct
 			
@@ -23,22 +23,14 @@ CHANGES
 				$needles = array('users/login', 'files/', 'uploads/', 'homepage', 'error/', 'no-permission');
 				preg_match($pattern, $current_url, $matches);
 				if (
-						strpos_arr($current_url, $needles) === false
-						AND
-						strlen($_SERVER['REQUEST_URI']) > 1
-						AND 
-						! $this->input->is_ajax_request()
-						AND 
-						strpos(str_replace($_SERVER['SERVER_NAME'], '', $current_url), $_SERVER['REQUEST_URI']) > 1
-						AND 
-						empty($matches)
+						.................
 					)	
 				{
 					$this->session->set_userdata('page_url',  $current_url);
 				}
 
 				
-		\network-site\system\cms\controllers\admin.php
+		admin.php
 		
 			CHANGED CODE: 
 			
@@ -49,7 +41,7 @@ CHANGES
 					TO: if ($this->ion_auth->login($email, $this->input->post('password'), (bool)$this->input->post('remember'), true))
 					
 					
-		\network-site\system\cms\modules\users\controllers\users.php
+		users.php
 		
 			CHANGED CODE:
 		
@@ -66,7 +58,7 @@ CHANGES
 					TO: $this->ion_auth->login($this->input->post('email'), $this->input->post('password'), true);
 					
 		
-		\network-site\system\cms\modules\users\models\ion_auth_model.php
+		ion_auth_model.php
 		
 			ADDED CODE inside function login
 			
@@ -77,15 +69,15 @@ CHANGES
 				}			
 				
 				
-		\network-site\system\codeigniter\helpers\url_helper.php
-		
+		url_helper.php
+			
 			ADDED CODE inside function current_url
 			
 				return $_SERVER['QUERY_STRING'] ? $url . '?'  .$_SERVER['QUERY_STRING'] : $url;
 		
 			
-		\network-site\system\cms\helpers\MY_text_helper.php
-		
+		MY_text_helper.php
+			
 			ADDED CODE: 
 			
 				if ( ! function_exists('strpos_arr'))
@@ -96,13 +88,7 @@ CHANGES
 					 */
 					function strpos_arr($haystack, $needles) 
 					{
-						if( ! is_array($needles) ) $needles = array($needles);
-						
-						foreach($needles as $needle) 
-						{
-							if(($pos = strpos($haystack, $needle))!==false) return $pos;
-						}
-						
+						...................
 						return false;
 					}
 
